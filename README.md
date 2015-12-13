@@ -4,3 +4,4 @@ Repository for Team 3:
 * Gerard Martí
 * Eric López
 * Adriana Fernández
+* Magí Andorrà
