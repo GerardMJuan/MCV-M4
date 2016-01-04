@@ -42,6 +42,7 @@ for alpha = 0.05:0.05:1
         % Save each result onto a file
     end
     i = i + 1;
+    j = 1;
 end
 %dlmwrite('fall/results.txt',w1,'-append','delimiter',' ','precision','%.3f');
 %dlmwrite('highway/results.txt',w2,'-append','delimiter',' ','precision','%.3f');
@@ -55,10 +56,10 @@ end
 % Compute a surface between alpha, p and F1 to visualize the evolution of
 % F1 and find the maxima:
 
-surf(0.05:0.05:1,0.1:0.05:1,w1);
+surf(0.1:0.05:1,0.05:0.05:1,w1);
 figure;
-surf(0.05:0.05:1,0.1:0.05:1,w2);
+surf(0.1:0.05:1,0.05:0.05:1,w2);
 figure;
-surf(0.05:0.05:1,0.1:0.05:1,w3);
+surf(0.1:0.05:1,0.05:0.05:1,w3);
 
 
