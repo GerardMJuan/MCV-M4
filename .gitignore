@@ -11,6 +11,9 @@ wp-content/cache/
 wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
-highway/
-testAB/
-opticalFlow/
+week1/highway/
+week1/testAB/
+week1/opticalFlow/
+week2/highway/
+week2/fall/
+week2/traffic/
