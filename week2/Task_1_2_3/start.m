@@ -1,10 +1,11 @@
 clc,clear
 
-ListNames = {'highway','fall','traffic'};
+ListNames = {'highway','fall','traffic'}; % List of the datasets we use
 
 % alpha = [0:0.5:10; 0:0.5:10; 0:0.5:10] % To TP,TN,FP,FN graphics
 alpha = [linspace(0,30,15);linspace(0,60,15);linspace(0,15,15)]; % To Prec-Recall curve
 
+% Inizialization of the variables
 TP = zeros(1,size(alpha,2));
 TN = zeros(1,size(alpha,2));
 FP = zeros(1,size(alpha,2));
@@ -13,7 +14,8 @@ prec = zeros(1,size(alpha,2));
 rec = zeros(1,size(alpha,2));
 F1 = zeros(1,size(alpha,2));
 
-for k=1:size(ListNames,2);
+
+for k=1:size(ListNames,2); % For all datasets which where asked
     
     name = ListNames{k};
     
@@ -25,9 +27,14 @@ for k=1:size(ListNames,2);
     
     for i=1:size(alpha,2);
         
-        fprintf('%i of %i \r',i,size(alpha(k,:),2))
-        NonRecGaussian(dir,res_dir,alpha(k,i))
+        fprintf('%i of %i \r',i,size(alpha(k,:),2)) 
+        
+        % Create our results
+        NonRecGaussian(dir,res_dir,alpha(k,i)) 
+        
+        % Evaluate our results
         assessment = getAssessment(gt_dir,res_dir);
+        
         TP(k,i) = assessment.TP;
         TN(k,i) = assessment.TN;
         FP(k,i) = assessment.FP;
@@ -37,7 +44,7 @@ for k=1:size(ListNames,2);
         F1(k,i) = assessment.F1;
     end
     
-    
+    % Plot the different curves
     figure(1)
     plot(alpha(k,:),TP(k,:),'LineWidth',1.5)
     hold on

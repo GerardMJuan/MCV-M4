@@ -1,7 +1,7 @@
  function [ ] = NonRecGaussian(dir,dir_res,alpha)
 
 % dir -> Location of the target images
-% dir -> Location to save the segmentated images
+% dir_res -> Location to save the segmentated images
 % alpha -> Factor to accept or not a foreground pixel
 
 if ~exist('alpha','var')
