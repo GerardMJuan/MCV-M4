@@ -17,10 +17,10 @@ for i=range,
     res_frame_y = abs(frame_r-m_y) >= alpha*(sqrt(v_y) + 2);
     res_frame_u = abs(frame_g-m_u) >= alpha*(sqrt(v_u) + 2);
     res_frame_v = abs(frame_b-m_v) >= alpha*(sqrt(v_v) + 2);
-    res_frame = res_frame_y | res_frame_u | res_frame_v;
+    res_frame = res_frame_y & res_frame_u & res_frame_v;
     
     % adapt the model
-    [m_y, v_y, m_u, v_u, m_v, v_v] = adaptModel_yuv(m_y, v_y, m_u, v_u, m_v, v_v,p,res_frame,frame);
+    [m_y, v_y, m_u, v_u, m_v, v_v] = adaptModel_yuv(m_y, v_y, m_u, v_u, m_v, v_v,p,res_frame_y,res_frame_u,res_frame_v,frame);
     
     %Get dimensions of frame
     [dimX,dimY] = size(gt_frame);

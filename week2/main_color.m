@@ -1,5 +1,5 @@
-alpha=2;
-p=0.0005;
+alpha=3;
+p=0.005;
 space='yuv';
 if space == 'rgb'
     [m_r, v_r, m_g, v_g, m_b, v_b] = trainModel_rgb('highway');
