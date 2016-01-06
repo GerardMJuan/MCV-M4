@@ -1,4 +1,4 @@
-function [ P,RC,F1 ] = getAssessmentAdapt(m,v,alpha,p,dir,~,range)
+function [par,P,RC,F1 ] = getAssessmentAdapt(m,v,alpha,p,dir,~,range)
 % This function provides with an assessment of the model trained before, with  
 % adaptability in each frame
 TP = 0;
@@ -42,4 +42,5 @@ end;
 P = TP/(TP+FP);
 RC = TP/(TP+FN);
 F1 = 2*(P*RC)/(P+RC);
+par = struct('TP',TP,'FP',FP,'TN',TN,'FN',FN);
 end
