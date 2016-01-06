@@ -1,4 +1,4 @@
-function [ F1 ] = desync( dir, maxDes, range )
+function [ F1 ] = desync( gt_dir, res_dir, maxDes, range )
 % This function gets basic assessment parameters
 % comparing provided ground truth and obtained results.
 % Key:
@@ -17,18 +17,18 @@ for des=0:maxDes;
     for i=range,
         if i<=range(end)-des;
             % Read files
-            gt_frame = imread(strcat(dir,'/','gt',sprintf('%06d',i),'.png'));
-            res_frame = imread(strcat(dir,'/','gt',sprintf('%06d',i+des),'.png'));
+            gt_frame = imread(strcat(gt_dir,'/','gt',sprintf('%06d',i),'.png'));
+            res_frame = imread(strcat(res_dir,'/','test_A_',sprintf('%06d',i+des),'.png'));
             %Get dimensions of frame
             [dimX,dimY] = size(gt_frame);
             %For each pixel
             for px_i=1:dimX,
                 for px_j=1:dimY,
                     %If its POSITIVE and had to be POSITIVE it's TRUE POSITIVE
-                    if (gt_frame(px_i,px_j) == 255 && (res_frame(px_i,px_j) == 255));
+                    if (gt_frame(px_i,px_j) == 255 && (res_frame(px_i,px_j) == 1));
                         TP = TP + 1;
                         %If its POSITIVE and had to be NEGATIVE it's FALSE POSITIVE
-                    elseif (gt_frame(px_i,px_j) < 255) && (res_frame(px_i,px_j) == 255);
+                    elseif (gt_frame(px_i,px_j) < 255) && (res_frame(px_i,px_j) == 1);
                         FP = FP + 1;
                         %If its NEGATIVE and had to be NEGATIVE it's TRUE NEGATIVE
                     elseif (gt_frame(px_i,px_j) < 255) && (res_frame(px_i,px_j) == 0);
