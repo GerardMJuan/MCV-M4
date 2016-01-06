@@ -1,4 +1,4 @@
-function [ ] = NonRecGaussian(dir,dir_res,alpha)
+ function [ ] = NonRecGaussian(dir,dir_res,alpha)
 
 % dir -> Location of the target images
 % dir -> Location to save the segmentated images

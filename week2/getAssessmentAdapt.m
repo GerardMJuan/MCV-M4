@@ -8,10 +8,10 @@ FN = 0;
 for i=range,
     % Read files
     gt_frame = imread(strcat(dir,'/groundtruth/gt',sprintf('%06d',i),'.png'));
-    frame = im2double(rgb2gray(imread(strcat(dir,'/input/in',sprintf('%06d',i),'.jpg'))));
+    frame = double(rgb2gray(imread(strcat(dir,'/input/in',sprintf('%06d',i),'.jpg'))));
     
     % get the results from the model
-    res_frame = abs(frame-m) >= alpha*(v + 2);
+    res_frame = abs(frame-m) >= alpha*(sqrt(v) + 2);
     
     % adapt the model
     [m,v] = adaptModel(m,v,p,res_frame,frame);
