@@ -9,18 +9,19 @@
 
 % Iterate over different values of alpha and p
 alpha = [linspace(0,40,40);linspace(0,65,40);linspace(0,20,40)];
+se = strel('disk',10);
 
 for i = 1:size(alpha,2)
 % Optimal parameters, get all 
-[parb,Pb,FCb,F1b,~] = getAssessmentAdapt(m2,v2,alpha(1,i),0.2,'highway','Test_HighAdapt_',1200:1350,1);
+[parb,Pb,FCb,F1b,~] = getAssessmentAdapt(m2,v2,alpha(1,i),0.2,'highway','Test_HighAdapt_',1200:1350,20,se);
 recB(i) = FCb;
 preB(i) = Pb;
 
-[para,Pa,FCa,F1a,~] = getAssessmentAdapt(m1,v1,alpha(2,i),0.05,'fall','Test_FallAdapt_',1510:1560,1);
+[para,Pa,FCa,F1a,~] = getAssessmentAdapt(m1,v1,alpha(2,i),0.05,'fall','Test_FallAdapt_',1510:1560,230,se);
 recA(i) = FCa;
 preA(i) = Pa;
 
-[parc,Pc,FCc,F1c,~] = getAssessmentAdapt(m3,v3,alpha(3,i),0.175,'traffic','Test_TraffAdapt_',1000:1050,1);
+[parc,Pc,FCc,F1c,~] = getAssessmentAdapt(m3,v3,alpha(3,i),0.175,'traffic','Test_TraffAdapt_',1000:1050,290,se);
 recC(i) = FCc;
 preC(i) = Pc;
 
@@ -67,7 +68,9 @@ for P=20:10:200
     aucC(j) = -trapz(recC,preC);
     
 end
-    
+
+alpha = [linspace(0,10,20);linspace(0,10,20);linspace(0,10,20)];
+
 % Task 6
  for i = 1:size(alpha,2)
 [parb,Pb,FCb,F1b,Qb] = getAssessmentAdapt(m2,v2,alpha(1,i),0.2,'highway','Test_HighAdapt_',1200:1350,1);
@@ -86,9 +89,10 @@ QWeightC(i) = Qc;
 
 figure(1)
 hold on
-plot(F1ScoreB,alpha(1,:),'LineWidth',1.5)
-plot(QWeightB,alpha(1,:),'LineWidth',1.5)
+plot(alpha(1,:),F1ScoreB,'LineWidth',1.5)
+plot(alpha(1,:),QWeightB,'LineWidth',1.5)
 title(sprintf('Evolution of F1 and Fbeta Measure respect to alpha, highway sequence'))
+legend(sprintf('F1-Measure'),sprintf('FBeta-Measure'));
 ylabel('Value of Measure')
 xlabel('alpha')
 grid
@@ -96,9 +100,10 @@ hold off
 
 figure(2)
 hold on
-plot(F1ScoreA,alpha(2,:),'LineWidth',1.5)
-plot(QWeightA,alpha(2,:),'LineWidth',1.5)
+plot(alpha(2,:),F1ScoreA,'LineWidth',1.5)
+plot(alpha(2,:),QWeightA,'LineWidth',1.5)
 title(sprintf('Evolution of F1 and Fbeta Measure respect to alpha, fall sequence'))
+legend(sprintf('F1-Measure'),sprintf('FBeta-Measure'));
 ylabel('Value of Measure')
 xlabel('alpha')
 grid
@@ -106,9 +111,10 @@ hold off
 
 figure(3)
 hold on
-plot(F1ScoreC,alpha(3,:),'LineWidth',1.5)
-plot(QWeightC,alpha(3,:),'LineWidth',1.5)
+plot(alpha(3,:),F1ScoreC,'LineWidth',1.5)
+plot(alpha(3,:),QWeightC,'LineWidth',1.5)
 title(sprintf('Evolution of F1 and Fbeta Measure respect to alpha, traffic sequence'))
+legend(sprintf('F1-Measure'),sprintf('FBeta-Measure'));
 ylabel('Value of Measure')
 xlabel('alpha')
 grid

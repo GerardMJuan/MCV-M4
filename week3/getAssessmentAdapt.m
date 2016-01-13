@@ -1,14 +1,13 @@
-function [par,P,RC,F1,Q] = getAssessmentAdapt(m,v,alpha,p,dir,~,range,Pixel)
+function [par,P,RC,F1,Q] = getAssessmentAdapt(m,v,alpha,p,dir,~,range,Pixel,SE)
 % This function provides with an assessment of the model trained before, with  
 % adaptability in each frame
 TP = 0;
 FP = 0;
 TN = 0;
 FN = 0;
-
-TPw = 0;
-FPw = 0;
-FNw = 0;
+FG = 0;
+GT = 0;
+k = 1;
 for i=range,
     % Read files
     gt_frame = imread(strcat(dir,'/groundtruth/gt',sprintf('%06d',i),'.png'));
@@ -19,14 +18,13 @@ for i=range,
 
     % (week 3 task 1) fill the task
     res_frame = imfill(res_frame,8,'holes');
-    %res_frame = bwareaopen(res_frame,Pixel);
-
+    res_frame = bwareaopen(res_frame,Pixel);
+    res_frame = imclose(res_frame,SE);
     % adapt the model
     [m,v] = adaptModel(m,v,p,res_frame,frame);
 
     %Get dimensions of frame
     [dimX,dimY] = size(gt_frame);
-    k = 1;
     %Standard evaluation of the image
     %For each pixel
     for px_i=1:dimX,
@@ -58,11 +56,6 @@ for i=range,
                 GT(k) = 1;
                 k = k + 1;
             end;
-            % Weighted F-measure computation
-
-            %TPw = TPw_t + TPw;
-            %FPw = FPw_t + FPw;
-            %FNw = FNw_t + FNw;
         end;
     end;
 end;
