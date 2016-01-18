@@ -1,0 +1,31 @@
+% Load the targe frames (sequence 1)
+A1 = imread('data_stereo_flow/training/image_0/000045_10.png');
+B1 = imread('data_stereo_flow/training/image_0/000045_11.png');
+
+% Load the targe frames (sequence 2)
+A2 = imread('data_stereo_flow/training/image_0/000045_10.png');
+B2 = imread('data_stereo_flow/training/image_0/000045_11.png');
+
+% Load groundtruth
+gt1 = imread('data_stereo_flow/training/flow_noc/000045_10.png');
+
+gt2 = imread('data_stereo_flow/training/flow_noc/000045_11.png');
+
+% Load Lucas-Kanade Estimations
+LK1 = imread('data_stereo_flow/Estimations/LKflow_000045_10.png');
+LK2 = imread('data_stereo_flow/Estimations/LKflow_000157_10.png');
+
+%Set params
+Block_Size = 16;
+Search_Area = 16;
+
+%Estimate Motion
+flow1 = optFlow(A1,B1,Block_Size,Search_Area);
+flow2 = optFlow(A2,B2,Block_Size,Search_Area);
+
+% APPLY FLOW TO THE IMAGE
+% TODO
+
+% Calculate MMEN and PEPN
+
+
