@@ -3,7 +3,7 @@ function [ flow ] = optFlow( A,B,Block_Size,S_range )
 %matching, with Backwards motion estimation 
 %   A: first image
 %   B: second image
-%   Block_size: size of the block (Normally 16 pixels
+%   Block_size: size of the block (Normally 16 pixels)
 %   S_range: Range of the search area
 
 % We create a Margin for A
@@ -25,23 +25,24 @@ flow = ones(size(A,1),size(A,2),3);
             %estimation)
 
             % Block to search
-            iB = B(x:x+Block_Size,y:y+Block_Size);
+            iB = B(x:x+Block_Size-1,y:y+Block_Size-1);
 
             % Search area
             % We add Block_Size for the padding, we only search in the
             % pixels of the original image
-            sA = A(Block_Size+x-S_range:Block_Size+x+2*S_range,Block_Size+y-S_range:Block_Size+y+2*S_range);
+            sA = A(Block_Size+x-S_range:Block_Size+x+2*S_range-1,Block_Size+y-S_range:Block_Size+y+2*S_range-1);
+            %sA = A(Block_Size+x:end-Block_Size,Block_Size+y:end-Block_Size);
 
             % Search for biggest MSE in the search area
             % It returns the position of the block in A where the similarity is
             % bigger
-            [i, j] = blocksearch(sA,iB,Block_Size);
+            [i, j, minDist] = blocksearch(sA,iB,Block_Size);
             
             % we need to save the vector we just created in the format of
             % an optical flow. Every pixel in the block behaves similarly,
             % so:
-            flow(i:i+Block_Size ,j:j+Block_Size,1) = x - i; 
-            flow(i:i+Block_Size ,j:j+Block_Size,2) = j - y;
+            flow(i:i+Block_Size-1 ,j:j+Block_Size-1,1) = x - i; 
+            flow(i:i+Block_Size-1 ,j:j+Block_Size-1,2) = y - j;
         end
     end
     
@@ -51,7 +52,7 @@ end
 
 
 % Compare both blocks and return the MSE
-function [x, y] = blocksearch(sA, iB, Bsize)
+function [x, y, minDist] = blocksearch(sA, iB, Bsize)
     iB = reshape(iB, [size(iB,1)*size(iB,2), 1]);
     x = 0;        
     y = 0;
@@ -59,9 +60,9 @@ function [x, y] = blocksearch(sA, iB, Bsize)
     for i = 1:size(sA,1)-Bsize
         for j = 1:size(sA,2)-Bsize
             % Get the block to compare
-            iA = sA(i:i+Bsize,j:j+Bsize);
+            iA = sA(i:i+Bsize-1,j:j+Bsize-1);
             iA = reshape(iA, [size(iA,1)*size(iA,2), 1]);
-            
+            iA = double(iA); iB = double(iB);
             % Compare the two blocks
             minDist_aux = sqrt(sum((iA - iB) .^ 2));
             
