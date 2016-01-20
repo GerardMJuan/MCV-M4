@@ -10,7 +10,7 @@ files = ListFiles(strcat(seq,'/input/'));
 NumFrames = size(files,1);
 NumFramesH = floor(NumFrames/2);
 %total = double(rgb2gray(imread(strcat(seq,'/','input/in',sprintf('%06d',r1),'.jpg'))));
-for i=1:NumFramesH
+for i=1:NumFramesH;
     total(:,:,i) = double(rgb2gray(imread(strcat(seq,'/input/',files(i).name))));
 end
 

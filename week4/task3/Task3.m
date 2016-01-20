@@ -21,15 +21,17 @@ fprintf('Stabilization: DONE')
 se = strel('disk',10);
 
 alpha = [linspace(0,20,40);linspace(0,20,40)];
+
+
 for i = 1:size(alpha,2)
 % Optimal parameters, get all 
 i
-[para,Pa,FCa,F1a,~] = getAssessmentAdapt(m1,v1,alpha(2,i),0.175,'traffic',1000:1050,230,se);
+[para,Pa,FCa,F1a,~] = getAssessmentAdapt(m1,v1,alpha(2,i),0.175,'traffic',1001:1050,290,se);
 recA(i) = FCa;
 preA(i) = Pa;
 F1A(i) = F1a;
 
-[parb,Pb,FCb,F1b,~] = getAssessmentAdapt(m2,v2,alpha(1,i),0.175,'results',1000:1050,20,se);
+[parb,Pb,FCb,F1b,~] = getAssessmentAdapt(m2,v2,alpha(1,i),0.175,'results',1001:1050,290,se);
 recB(i) = FCb;
 preB(i) = Pb;
 F1B(i) = F1b;
@@ -38,8 +40,8 @@ F1B(i) = F1b;
 end
 
 figure(2)
-hold on
 plot(recA,preA,'LineWidth',1.5)
+hold on
 plot(recB,preB,'LineWidth',1.5)
 
 title(sprintf('Precision vs Recall depending on \\alpha'))
