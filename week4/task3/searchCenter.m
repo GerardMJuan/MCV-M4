@@ -16,38 +16,10 @@ function [x1, y1] = searchCenter(x2, y2, I1, I2, Block_Size, Search_Area)
                 minDist = minDist_aux;
                 x1 = i;
                 y1 = j;
-%                 figure(2)
-%                 subplot(1,2,1)
-%                 imshow(window1)
-%                 
-%                 subplot(1,2,2)
-%                 imshow(window2)
-                
-                
-                
-%                 figure(1)
-%                 subplot(1,2,1)
-%                 imshow(I1)
-%                 rectangle('Position', [x1, y1, 16, 16],...
-%                     'EdgeColor','g', 'LineWidth', 1)
-%                 
-%                 subplot(1,2,2)
-%                 imshow(I2)
-%                 rectangle('Position', [x2, y2, 16, 16],...
-%                     'EdgeColor','g', 'LineWidth', 1)
-% 
-%                 pause(0.05);
+
             end
         end
     end
-%     figure(2)
-%     subplot(1,2,1)
-%     imshow(window1)
-%     
-%     subplot(1,2,2)
-%     imshow(window2)
-%     
-%     pause(0.5);
 
     
 end

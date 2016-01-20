@@ -17,12 +17,13 @@ for i=range,
     res_frame = abs(frame-m) >= alpha*(sqrt(v) + 2);
 
     % (week 3 task 1) fill the task
-    res_frame = imfill(res_frame,4,'holes');
+    res_frame = imfill(res_frame,8,'holes');
     res_frame = bwareaopen(res_frame,Pixel);
     res_frame = imclose(res_frame,SE);
     % adapt the model
     [m,v] = adaptModel(m,v,p,res_frame,frame);
-
+    %imwrite(255*res_frame,strcat('prueba/',sprintf('%i',i),'.png'))
+    
     %Get dimensions of frame
     [dimX,dimY] = size(gt_frame);
     %Standard evaluation of the image
@@ -58,6 +59,7 @@ for i=range,
             end;
         end;
     end;
+    
 end;
 
 P = TP/(TP+FP);
