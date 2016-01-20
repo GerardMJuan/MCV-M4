@@ -18,9 +18,48 @@ LK2 = flow_read('data_stereo_flow/Estimations/LKflow_000157_10.png');
 Block_Size = 16;
 Search_Area = 16;
 
-%Estimate Motion
 flow1 = optFlow(A1,A2,Block_Size,Search_Area);
 flow2 = optFlow(B1,B2,Block_Size,Search_Area);
+
+%Estimate Motion for different block sizes
+% block_size = 16:16:128;
+% j = 1;
+% for i = block_size
+%     flow1 = optFlow(A1,A2,i,i);
+%     flow2 = optFlow(B1,B2,i,i);
+%     
+%     [A_MSEN,A_PEPN] = flow_error(gt1,flow1,3);
+%     [B_MSEN,B_PEPN] = flow_error(gt2,flow2,3);
+%     
+%     MSEN_1(j) = A_MSEN;
+%     PEPN_1(j) = A_PEPN;
+%     
+%     MSEN_2(j) = B_MSEN;
+%     PEPN_2(j) = B_PEPN;
+%     j = j + 1;
+% end
+% 
+% figure(3)
+% hold on
+% plot(block_size,MSEN_1,'LineWidth',1.5)
+% plot(block_size,MSEN_2,'LineWidth',1.5)
+% title(sprintf('MSEN vs block size'))
+% xlabel('Block Size')
+% ylabel('MSEN')
+% legend('sequence 45','sequence 157');
+% grid
+% hold off
+% 
+% figure(4)
+% hold on
+% plot(block_size,PEPN_1,'LineWidth',1.5)
+% plot(block_size,PEPN_2,'LineWidth',1.5)
+% title(sprintf('PEPN vs block size'))
+% xlabel('Block Size')
+% ylabel('MSEN')
+% legend('sequence 45','sequence 157');
+% grid
+% hold off
 
 % WE PROBABLY NEED TO DO A POST PROCESSING OF THE FLOW IF IT DOESNT WORK
 % , LOOK AT README.TXT
