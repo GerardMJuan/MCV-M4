@@ -13,7 +13,7 @@ close all;
 %% fields : name -- string
 %% originalFrames -- [nRows x nCols x nFrames]
 %%
-sequence.name = 'flower'; % 'kids','car','lamp','flower'
+sequence.name = 'traffic'; % 'kids','car','lamp','flower'
 sequence = loadSequence(sequence);
 %filename = strcat(sequence.name,'File_step1');
 %save(filename,'sequence')
