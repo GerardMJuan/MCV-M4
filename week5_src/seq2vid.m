@@ -1,14 +1,14 @@
-function seq2vid(d)
+function seq2vid()
 
-workingDir = strcat('datasets\',d);
-imageNames = dir(fullfile(workingDir,'input'));
+workingDir = 'highway';
+imageNames = dir(fullfile(workingDir,'input','*.jpg'));
 imageNames = {imageNames.name}';
 
 
-outputVideo = VideoWriter(fullfile('videos',strcat(d,'.avi')));
-outputVideo.FrameRate = 30;
+outputVideo = VideoWriter(fullfile(workingDir,strcat(dir,'.avi')));
+outputVideo.FrameRate = 25;
 open(outputVideo)
-for ii = 3:length(imageNames)
+for ii = 1:length(imageNames)
    img = imread(fullfile(workingDir,'input',imageNames{ii}));
    writeVideo(outputVideo,img)
 end

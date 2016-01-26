@@ -1,8 +1,8 @@
-function multiObjectTracking1(dataset)
+function multiObjectTracking1()
 
 % Create System objects used for reading video, detecting moving objects,
 % and displaying the results.
-obj = setupSystemObjects(dataset);
+obj = setupSystemObjects();
 
 tracks = initializeTracks(); % Create an empty array of tracks.
 
@@ -28,13 +28,14 @@ end
 
 
 
-function obj = setupSystemObjects(dataset)
+function obj = setupSystemObjects()
         % Initialize Video I/O
         % Create objects for reading a video from a file, drawing the tracked
         % objects in each frame, and playing the video.
 
         % Create a video file reader.
-        obj.reader = vision.VideoFileReader(strcat('videos/',dataset,'.avi'));
+        obj.reader = vision.VideoFileReader('highway/highway1.avi');
+
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
         obj.videoPlayer = vision.VideoPlayer('Position', [20, 400, 700, 400]);
@@ -176,7 +177,6 @@ function deleteLostTracks()
 
         invisibleForTooLong = 3;
         ageThreshold = 8;
-        minFrames2Cross = 50;
 
         % Compute the fraction of the track's age for which it was visible.
         ages = [tracks(:).age];
@@ -187,14 +187,6 @@ function deleteLostTracks()
         lostInds = (ages < ageThreshold & visibility < 0.60) | ...
             [tracks(:).consecutiveInvisibleCount] >= invisibleForTooLong;
         
-%         %Print age of lost track
-%         if(lostInds(1)>0)
-%             for i =1:length(lostInds)
-%                 if( [tracks(lostInds(i)).age] > minFrames2Cross )
-%                     display([tracks(lostInds(i)).age])
-%                 end
-%             end
-%         end
 
         % Delete lost tracks.
         tracks = tracks(~lostInds);
@@ -256,8 +248,13 @@ function displayTrackingResults()
                 oldbboxes = cat(1, reliableTracks.oldbbox);
 
                 %Compute displacment since last frame
-                deltaX = double(bboxes(:,1)-oldbboxes(:,1));
-                deltaY = double(bboxes(:,2)-oldbboxes(:,2));
+                centerX = double(bboxes(:,1))+double(bboxes(:,3))./2;
+                centerY = double(bboxes(:,2))+double(bboxes(:,4))./2;
+                oldcenterX = double(oldbboxes(:,1))+double(oldbboxes(:,3))./2;
+                oldcenterY = double(oldbboxes(:,2))+double(oldbboxes(:,4))./2;
+                
+                deltaX = centerX-oldcenterX;
+                deltaY = centerY-oldcenterY;
                 modDisp = sqrt(deltaX.^2+deltaY.^2)';
                 units='px/frame';
                 
@@ -265,16 +262,21 @@ function displayTrackingResults()
                 %If we assume a car from front is 2m width 2m heigh, we can
                 %say number of pixels in diagonal of bb is sqrt(2^2+2^2)
                 %pixels to km
-                widthX = double(bboxes(:,3)-oldbboxes(:,3));
-                widthY = double(bboxes(:,4)-oldbboxes(:,4));
+                expected_bbox_x = 3.5; %meters
+                expected_bbox_y = 2; %meters
+                expected_camera_angle = 45; %degrees
+                widthX = (double(bboxes(:,3))+double(oldbboxes(:,3)))./2; %mean of widths of two frames we used for speed
+                widthY = (double(bboxes(:,4))+double(oldbboxes(:,4)))./2; %mean of heighs of two frames we used for speed
                 diaPx = sqrt(widthX.^2+widthY.^2)';
-                diaKm = sqrt(0.002^2+0.001^2);
+                diaKm = sqrt((expected_bbox_x/1000)^2+(expected_bbox_y/1000)^2);
                 px2Km_factor = diaKm./diaPx;
+                %Prespective error correction factor
+                persp_factor = cosd(expected_camera_angle); %pitagoras
                 %frames to hours
-                framerate = 30;
-                frames2hours_factor = framerate*3600;
+                framerate = 25; %frames/sec
+                frames2hours_factor = framerate*3600; %frames/h
                 %convert
-                modDisp = modDisp.*px2Km_factor.*frames2hours_factor;
+                modDisp = modDisp.*px2Km_factor.*frames2hours_factor.*persp_factor;
                 units='km/h';
                 
                 % Get ids.
