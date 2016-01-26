@@ -34,7 +34,7 @@ function obj = setupSystemObjects()
         % objects in each frame, and playing the video.
 
         % Create a video file reader.
-        obj.reader = vision.VideoFileReader('highway/highway1.avi');
+        obj.reader = vision.VideoFileReader('../videos/highway1.avi');
 
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
