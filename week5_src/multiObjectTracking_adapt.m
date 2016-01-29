@@ -13,7 +13,7 @@ kFrame = NumFramesH;
 kVel = 0;
 fps = 29;
 M = [];
-videoSaving = true;
+videoSaving = false;
 
 if videoSaving
     nameVideo = strcat(seq(1:3),'.avi');
@@ -107,6 +107,7 @@ end
 
     function [centroids, bboxes, mask, modelMean, modelVariance] = detectObjects(frame,modelMean,modelVariance)
         
+        % Values for each testing sequence
         switch seq
             case 'highway/input'
                 alpha = 2.75;
@@ -125,7 +126,6 @@ end
         
         Pixel = 20;
         se = strel('disk',8);
-        th = struct('alpha', 0.4, 'beta', 0.6, 'tS', 0.1, 'tH', 0.5);
         
         % Detect foreground.
         
@@ -287,9 +287,9 @@ end
             if ~isempty(reliableTracks)
                 % Get bounding boxes.
                 bboxes = cat(1, reliableTracks.bbox);
-                
-                
                 oldbboxes = cat(1, reliableTracks.oldbbox);
+                
+                % Bottom left corner of old and new bounding boxes.
                 x_1 = double(bboxes(:,1)+bboxes(:,3));
                 y_1 = double(bboxes(:,2)+bboxes(:,4));
                 
@@ -312,6 +312,7 @@ end
                         conversor = -0.2747*x_2+96.1; % velocity (adjust with just two points)
                 end
                 
+                % Transformation of pixels in 
                 dKm = 4.5./conversor.*dPx/1000;
                 dt = 1/fps/3600;
                 
@@ -324,6 +325,8 @@ end
                 % Get ids.
                 ids = int32([reliableTracks(:).id]);
                 
+                % Trick to show the proper ID to the cars, and make easier
+                % to count them
                 speedV = [speedV speed'];
                 M = [M ids];
                 uni = unique(M);
